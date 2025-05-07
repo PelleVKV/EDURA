@@ -43,7 +43,7 @@
 		<img src={image} alt="Logo" class="absolute top-4 left-4 w-9 z-25"/>
 
 		<!-- Project Structure Menu -->
-		<div class={`flex flex-col transition-all duration-300 w-[300px] ${isMenuCollapsed ? '-translate-x-full' : ''}
+		<div class={`flex flex-col transition-all shadow-2xl duration-300 w-[300px] ${isMenuCollapsed ? '-translate-x-full' : ''}
 					 h-full bg-white px-4 py-4 rounded-r-xl z-20`}>
 			<div class="flex items-center justify-end transition-all duration-300">
 				<button on:click={toggleMenu} aria-label="Toggle menu" class="cursor-pointer">
@@ -63,7 +63,7 @@
 		</div>
 
 		<!-- Assets Menu Bar -->
-		<div class={`flex flex-col transition-all duration-300 ${isMenuCollapsed ? 'translate-x-full' : ''} 
+		<div class={`flex flex-col transition-all shadow-2xl duration-300 ${isMenuCollapsed ? 'translate-x-full' : ''} 
 					w-[300px] h-full bg-white px-4 py-4 rounded-l-xl z-20`}>
 			<div class="flex items-center justify-between">
 				<div class="relative flex flex-row items-center cursor-pointer">
