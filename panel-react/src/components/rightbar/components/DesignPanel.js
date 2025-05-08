@@ -1,9 +1,17 @@
 import React from "react";
+import { Searchbar } from "../../tools/Searchbar";
 
 export const DesignPanel = () => {
     return (
         <div class="w-full h-full p-2">
-            designpanel
+            <div className="text-xs w-full h-full space-y-8 select-none">
+                <Searchbar />
+
+                <div className="mt-4">
+                    <p>Media</p>
+                    <hr></hr>
+                </div>
+            </div>
         </div>
     )
 }
