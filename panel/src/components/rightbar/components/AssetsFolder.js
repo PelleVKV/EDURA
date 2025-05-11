@@ -20,6 +20,8 @@ function ToolItem({ item }) {
                 return "bg-yellow-500";
             case "shapes":
                 return "bg-blue-500";
+            case "nodes":
+                return "bg-green-500";
             default:
                 return "bg-gray-500";
         }
@@ -48,20 +50,31 @@ function ToolItem({ item }) {
 }
 
 export const AssetsFolder = () => {
+    // Group items by type
+    const groupedTypes = types.reduce((acc, item) => {
+        if (!acc[item.type]) {
+            acc[item.type] = [];
+        }
+        acc[item.type].push(item);
+        return acc;
+    }, {});
+
     return (
         <div className="w-full h-full p-2">
             <div className="text-xs w-full h-full space-y-8 select-none">
                 <Searchbar />
 
-                <div className="mt-4">
-                    <p>Media</p>
-                    <hr></hr>
-                    <div className="grid grid-cols-3 gap-4 mt-2">
-                        {types.map((item) => (
-                            <ToolItem key={item.id} item={item} />
-                        ))}
+                {Object.entries(groupedTypes).map(([type, items]) => (
+                    <div key={type}>
+                        <p className="mt-4 capitalize">{type}</p>
+                        <hr />
+                        <div className="grid grid-cols-3 gap-4 mt-2">
+                            {items.map((item) => (
+                                <ToolItem key={item.id} item={item} />
+                            ))}
+                        </div>
                     </div>
-                </div>
+                ))}
             </div>
         </div>
     );

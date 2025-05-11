@@ -22,6 +22,20 @@
         "id": 3,
         "name": "video",
         "icon": "faVideo",
-        "type": "media"
+        "type": "media",
+        "initialWidth": 450,
+        "initialHeight": 225,
+        "fabricShape": "rect",
+        "initialFill": "whitesmoke"
+    },
+    {
+        "id": 4,
+        "name": "frame",
+        "icon": "faTarp",
+        "type": "nodes",
+        "initialWidth": 950,
+        "initialHeight": 750,
+        "fabricShape": "rect",
+        "initialFill": "whitesmoke"
     }
 ]

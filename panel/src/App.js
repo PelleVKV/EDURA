@@ -1,11 +1,15 @@
 import "./assets/css/App.css";
-import React from "react";
+import React, { useEffect } from "react";
 import image from './assets/images/EDURA-LOGO.png';
+import { Notification } from './components/tools/Notification';
+import { useNotification } from "./context/NotificationContext";
 import { CourseEnv } from './components/CourseEnv';
 import { CourseTree } from './components/leftbar/CourseTree';
 import { Toolbar } from './components/rightbar/Toolbar';
 
 function App() {
+    const { showNotification } = useNotification();
+
     const [isMenuCollapsed, setIsMenuCollapsed] = React.useState(false);
     const [isProfileCollapsed, setIsProfileCollapsed] = React.useState(true);
 
@@ -16,6 +20,10 @@ function App() {
     const toggleProfileMenu = () => {
         setIsProfileCollapsed(!isProfileCollapsed);
     }
+
+    useEffect(() => {
+        showNotification("Welcome to the Course Builder!", 3000);
+    }, []);
 
     return (
         <div className="flex justify-between w-screen h-screen bg-gray-200 py-2 overflow-hidden">
@@ -78,6 +86,7 @@ function App() {
             </div>
 
             <CourseEnv />
+            <Notification />
         </div>
     );
 }

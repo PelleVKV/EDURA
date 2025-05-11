@@ -8,8 +8,6 @@ export const DesignPanel = () => {
                 <Searchbar />
 
                 <div className="mt-4">
-                    <p>Media</p>
-                    <hr></hr>
                 </div>
             </div>
         </div>

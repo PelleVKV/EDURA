@@ -5,7 +5,12 @@ import { createFabricObject } from "../utils/LoadFabricItem";
 import { ContextMenu, courseEnvMenu } from "./tools/ContextMenu";
 
 export const CourseEnv = () => {
-    const { dataCollection, setDataCollection } = useData();
+    const {
+        dataCollection,
+        setDataCollection,
+        selectedShapes,
+        setSelectedShapes,
+    } = useData();
     const [menuPos, setMenuPos] = useState(null);
 
     const canvasRef = useRef(null);
@@ -81,9 +86,27 @@ export const CourseEnv = () => {
                     fabricCanvas.requestRenderAll(); // Re-render the canvas
 
                     setDataCollection((prev) =>
-                        prev.filter((item) => !activeObjects.some((obj) => obj.id === item.id))
+                        prev.filter(
+                            (item) =>
+                                !activeObjects.some((obj) => obj.id === item.id)
+                        )
                     );
                 }
+            }
+        };
+
+        const onSelect = (opt) => {
+            const selected = opt.selected || [];
+            console.log("Selected items:", selected);
+            
+            if (selected.length > 0) {
+                const shapes = selected.map((obj) => ({
+                    id: obj.id,
+                    type: obj.type,
+                }));
+                setSelectedShapes(shapes);
+            } else {
+                setSelectedShapes([]);
             }
         };
 
@@ -92,6 +115,9 @@ export const CourseEnv = () => {
         fabricCanvas.on("mouse:down", onMouseDown);
         fabricCanvas.on("mouse:move", onMouseMove);
         fabricCanvas.on("mouse:up", onMouseUp);
+        fabricCanvas.on("selection:created", onSelect);
+        fabricCanvas.on("selection:updated", onSelect);
+        fabricCanvas.on("selection:cleared", () => setSelectedShapes([]));
         document.addEventListener("keydown", handleKeyDown);
 
         // Cleanup
@@ -100,6 +126,9 @@ export const CourseEnv = () => {
             fabricCanvas.off("mouse:down", onMouseDown);
             fabricCanvas.off("mouse:move", onMouseMove);
             fabricCanvas.off("mouse:up", onMouseUp);
+            fabricCanvas.off("selection:created", onSelect);
+            fabricCanvas.off("selection:updated", onSelect);
+            fabricCanvas.off("selection:cleared");
             document.removeEventListener("keydown", handleKeyDown);
             fabricCanvas.dispose();
         };
@@ -107,7 +136,6 @@ export const CourseEnv = () => {
 
     useEffect(() => {
         const fabricCanvas = fabricCanvasRef.current;
-
         if (!fabricCanvas) return;
 
         dataCollection.forEach((item) => {
@@ -117,6 +145,7 @@ export const CourseEnv = () => {
             if (fabricObj) {
                 fabricCanvas.add(fabricObj);
                 fabricCanvas.centerObject(fabricObj);
+                fabricCanvas.requestRenderAll();
             }
         });
     }, [dataCollection]);
@@ -128,7 +157,7 @@ export const CourseEnv = () => {
 
     return (
         <div
-            className="absolute inset-0 bg-white top-0 left-0 w-screen overflow-auto
+            className="absolute inset-0 bg-white top-0 left-0 w-screen overflow-none
             h-screen z-0 zoom-node bg-[radial-gradient(#e5e7eb_1.5px,transparent_1.5px)] [background-size:16px_16px]"
             onContextMenu={handleContextMenu}
         >
