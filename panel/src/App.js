@@ -1,4 +1,3 @@
-import "./assets/css/App.css";
 import React, { useEffect } from "react";
 import image from './assets/images/EDURA-LOGO.png';
 import { Notification } from './components/tools/Notification';
@@ -36,7 +35,7 @@ function App() {
 
             <img src={image} alt="Logo" className="absolute top-4 left-4 w-9 z-30" />
 
-            <div className={`flex flex-col transition-all shadow-2xl duration-300 w-[300px] ${isMenuCollapsed ? '-translate-x-full' : ''} h-full bg-white px-4 py-4 rounded-r-xl z-20`}>
+            <div className={`flex flex-col transition-all shadow-2xl duration-300 w-[300px] ${isMenuCollapsed ? '-translate-x-full' : ''} bg-white px-4 py-4 rounded-r-xl z-20`}>
                 <div className="flex items-center justify-end transition-all duration-300">
                     <button onClick={toggleMenu} aria-label="Toggle menu" className="cursor-pointer">
                         <svg width="30" height="15" viewBox="0 0 15 15" xmlns="http://www.w3.org/2000/svg">
@@ -54,7 +53,7 @@ function App() {
                 </div>
             </div>
 
-            <div className={`flex flex-col transition-all shadow-2xl duration-300 ${isMenuCollapsed ? 'translate-x-full' : ''} w-[300px] h-full bg-white px-4 py-4 rounded-l-xl z-20`}>
+            <div className={`flex flex-col transition-all shadow-2xl duration-300 ${isMenuCollapsed ? 'translate-x-full' : ''} w-[300px] bg-white px-4 py-4 rounded-l-xl z-20`}>
                 <div className="flex items-center justify-between">
                     <div className="relative flex flex-row items-center cursor-pointer">
                         <button onClick={toggleProfileMenu} aria-label="collapseProfileMenu" className="flex flex-row items-center cursor-pointer z-30">

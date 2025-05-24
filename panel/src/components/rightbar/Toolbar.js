@@ -11,7 +11,7 @@ export const Toolbar = () => {
     const [activeTab, setActiveTab] = useState(tabs[0].id);
 
     return (
-        <div className="w-full h-full">
+        <div className="">
             <div className="flex text-xs">
                 <button className={`flex justify-center items-center w-1/2 py-1 rounded-t-lg cursor-pointer
                 ${activeTab === 'design' ? 'bg-gray-100' : ''}`} onClick={() => setActiveTab('design')}>DESIGN</button>

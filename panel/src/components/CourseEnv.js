@@ -3,6 +3,7 @@ import { Canvas, Rect } from "fabric";
 import { useData } from "../context/DataContext";
 import { createFabricObject } from "../utils/LoadFabricItem";
 import { ContextMenu, courseEnvMenu } from "./tools/ContextMenu";
+import { ActiveSelection } from "fabric";
 
 export const CourseEnv = () => {
     const {
@@ -10,6 +11,7 @@ export const CourseEnv = () => {
         setDataCollection,
         selectedShapes,
         setSelectedShapes,
+        isExternalSelectionChange
     } = useData();
     const [menuPos, setMenuPos] = useState(null);
 
@@ -79,6 +81,12 @@ export const CourseEnv = () => {
         const handleKeyDown = (e) => {
             if (e.key === "Delete" || e.key === "Backspace") {
                 const activeObject = fabricCanvas.getActiveObject();
+
+                // Prevent deleting if a Textbox is being edited
+                if (activeObject && activeObject.isEditing) {
+                    return;
+                }
+
                 const activeObjects = fabricCanvas.getActiveObjects();
                 if (activeObjects.length > 0) {
                     activeObjects.forEach((obj) => fabricCanvas.remove(obj)); // Remove each object
@@ -97,8 +105,7 @@ export const CourseEnv = () => {
 
         const onSelect = (opt) => {
             const selected = opt.selected || [];
-            console.log("Selected items:", selected);
-            
+
             if (selected.length > 0) {
                 const shapes = selected.map((obj) => ({
                     id: obj.id,
@@ -107,6 +114,22 @@ export const CourseEnv = () => {
                 setSelectedShapes(shapes);
             } else {
                 setSelectedShapes([]);
+            }
+        };
+
+        const onSelectionChanged = () => {
+            const active = fabricCanvas.getActiveObject();
+            if (!active) {
+                setSelectedShapes([]);
+                return;
+            }
+
+            if (active.type === "activeSelection") {
+                setSelectedShapes(
+                    active._objects.map((obj) => ({ id: obj.id }))
+                );
+            } else {
+                setSelectedShapes([{ id: active.id }]);
             }
         };
 
@@ -134,6 +157,34 @@ export const CourseEnv = () => {
         };
     }, []);
 
+    useEffect(() => {
+        if (!isExternalSelectionChange.current) return;
+
+        const fabricCanvas = fabricCanvasRef.current;
+
+        // Find fabric objects corresponding to selected shapes
+        const objectsToSelect = selectedShapes
+            .map((shape) =>
+                fabricCanvas.getObjects().find((obj) => obj.id === shape.id)
+            )
+            .filter(Boolean); // Remove undefined entries
+
+        if (objectsToSelect.length === 1) {
+            fabricCanvas.setActiveObject(objectsToSelect[0]);
+        } else if (objectsToSelect.length > 1) {
+            const selection = new ActiveSelection(objectsToSelect, {
+                canvas: fabricCanvas,
+            });
+            fabricCanvas.setActiveObject(selection);
+        } else {
+            fabricCanvas.discardActiveObject();
+        }
+
+        fabricCanvas.requestRenderAll();
+        isExternalSelectionChange.current = false;
+    }, [selectedShapes]);
+
+    // Add objects to canvas
     useEffect(() => {
         const fabricCanvas = fabricCanvasRef.current;
         if (!fabricCanvas) return;

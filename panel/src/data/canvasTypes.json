@@ -37,5 +37,14 @@
         "initialHeight": 750,
         "fabricShape": "rect",
         "initialFill": "whitesmoke"
+    },
+    {
+        "id": 5,
+        "name": "text",
+        "icon": "faTextHeight",
+        "type": "shapes",
+        "fabricShape": "textbox",
+        "initialText": "Enter text",
+        "initialFill": "black"
     }
 ]
